@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: e3a5af58de96c0c418904588461658a7
+timeCreated: 1480538910
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - playerInfo: {fileID: 114000013700230716, guid: 885d524c5b9fc734db88057a9dd72ee7,
+      type: 2}
+  - prefabMutant1: {fileID: 1000012533735300, guid: 39c59958b004f4a43965cf56c8b1d746,
+      type: 2}
+  - prefabMutant2: {fileID: 1000010484208622, guid: 16c6110602afa6b41a6b29c030149cb6,
+      type: 2}
+  - prefabMutant3: {fileID: 1000013953971850, guid: a06c6dd809ddeaf4aa848d80f7240f48,
+      type: 2}
+  - prefabBoss: {fileID: 1000012420149270, guid: d462b5f91c176b24fb7641a63cf92c46,
+      type: 2}
+  - winCanvas: {instanceID: 0}
+  - loseCanvas: {instanceID: 0}
+  - spawnPoints: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
