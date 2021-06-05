@@ -13,7 +13,7 @@ public class Mutants : MonoBehaviour {
     public int distancia_visao_inimigo = 15;
     public int vida;
     public int dano;
-    private bool dead = false;
+    private bool mutantIsDead = false;
     private bool isAttack = false;
 
     private float vol = 0.2f;
@@ -42,8 +42,8 @@ public class Mutants : MonoBehaviour {
             if ( drop < 1) {
                 dropItem();
             }
-            
-            dead = true;
+
+            mutantIsDead = true;
             GetComponent<BoxCollider>().size = new Vector3(0.5f, 0.5f, 0.5f);
             //GetComponent<BoxCollider>().enabled = false;
             agent.enabled = false;
@@ -98,68 +98,74 @@ public class Mutants : MonoBehaviour {
     {
         if (!playerInfo.isDead) {
 
-            if (vida <= 0)
+            if (vida > 0)
             {
-                if(GetComponent<Collider>().CompareTag("Boss")){
-                    Destroy(gameObject);
+                if (mutantIsDead == false ) {
+
+                    Vector3 direction = player.position - this.transform.position;
+                    float angle = Vector3.Angle(direction, this.transform.forward);
+                    if (Vector3.Distance(player.position, this.transform.position) < distancia_visao_inimigo && angle < angulo_visao_mutant)
+                    {
+
+                        if (!getAttack())
+                        {
+                            agent.destination = player.position;
+                        }
+
+                        anim.SetBool("isIdle", true);
+                        if (direction.magnitude > agent.stoppingDistance)
+                        {
+                            if (Time.time >= lastSoundTime + runTimeLeft)
+                            {
+                                source.PlayOneShot(runSound, vol);
+                                lastSoundTime = Time.time;
+                            }
+
+                            anim.SetBool("isRuning", true);
+                            anim.SetBool("isAttacking", false);
+
+                        }
+                        else
+                        {
+                            anim.SetBool("isRuning", false);
+                            anim.SetBool("isAttacking", true);
+                            if (Time.time >= lastSoundTime + runTimeLeft)
+                            {
+                                source.PlayOneShot(attackSound, vol);
+                                lastSoundTime = Time.time;
+                            }
+
+
+                        }
+
+
+                    }
+                    else
+                    {
+
+                        anim.SetBool("isIdle", true);
+                        anim.SetBool("isRuning", false);
+                        anim.SetBool("isAttacking", false);
+
+                    }
+
                 }
-                else {
+
+        } else {
+
+                if (GetComponent<Collider>().CompareTag("Boss"))
+                {
+                    anim.SetBool("isDead", true);
+                    Destroy(gameObject, 3f);
+                }
+                else
+                {
                     Destroy(gameObject, 3f);
 
                 }
                 return;
             }
-
-            if(dead == false){
-
-                Vector3 direction = player.position - this.transform.position;
-                float angle = Vector3.Angle(direction, this.transform.forward);
-                if (Vector3.Distance(player.position, this.transform.position) < distancia_visao_inimigo && angle < angulo_visao_mutant)
-                {
-
-                    if (!getAttack())
-                    {
-                        agent.destination = player.position;
-                    }
-
-                    anim.SetBool("isIdle", true);
-                    if (direction.magnitude > agent.stoppingDistance)
-                    {
-                        if (Time.time  >= lastSoundTime + runTimeLeft)
-                        {
-                            source.PlayOneShot(runSound, vol);
-                            lastSoundTime = Time.time;
-                        }
-
-                        anim.SetBool("isRuning", true);
-                        anim.SetBool("isAttacking", false);
-
-                    }
-                    else
-                    {
-                        anim.SetBool("isRuning", false);
-                        anim.SetBool("isAttacking", true);
-                        if (Time.time >= lastSoundTime + runTimeLeft)
-                        {
-                            source.PlayOneShot(attackSound, vol);
-                            lastSoundTime = Time.time;
-                        }
-                    
-
-                    }
-
-
-                }
-                else {
-
-                    anim.SetBool("isIdle", true);
-                    anim.SetBool("isRuning", false);
-                    anim.SetBool("isAttacking", false);
-
-                }
-
-                }
-            }
+        }
     }
 
 
